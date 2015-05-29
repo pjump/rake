@@ -7,6 +7,7 @@ require 'rake/thread_pool'
 require 'rake/thread_history_display'
 require 'rake/trace_output'
 require 'rake/win32'
+require 'rake/preparse_cl'
 
 module Rake
 
@@ -19,6 +20,7 @@ module Rake
   class Application
     include TaskManager
     include TraceOutput
+    include CLI
 
     # The name of the application (typically 'rake')
     attr_reader :name
@@ -622,6 +624,11 @@ module Rake
     def handle_options # :nodoc:
       options.rakelib = ['rakelib']
       options.trace_output = $stderr
+
+      task_args_hash = preparse_argv!(ARGV)
+      task_args_hash.each_pair do |k,v|
+        self[k].argv = v
+      end
 
       OptionParser.new do |opts|
         opts.banner = "#{Rake.application.name} [-f rakefile] {options} targets..."

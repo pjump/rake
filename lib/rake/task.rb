@@ -29,6 +29,9 @@ module Rake
     # location option set).
     attr_reader :locations
 
+    # What's in between \[ and \] after the task name on the command line
+    attr_accessor :argv
+
     # Return task name
     def to_s
       name

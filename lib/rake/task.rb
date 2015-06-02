@@ -29,9 +29,6 @@ module Rake
     # location option set).
     attr_reader :locations
 
-    # What's in between \[ and \] after the task name on the command line
-    attr_accessor :argv
-
     # Return task name
     def to_s
       name
@@ -163,8 +160,9 @@ module Rake
     end
 
     # Invoke the task if it is needed.  Prerequisites are invoked first.
-    def invoke(*args)
+    def invoke(*args, argv: [])
       task_args = TaskArguments.new(arg_names, args)
+      task_args.argv = argv
       invoke_with_call_chain(task_args, InvocationChain::EMPTY)
     end
 

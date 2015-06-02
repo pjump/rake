@@ -37,6 +37,8 @@ module Rake
     # List of the top level task names (task names from the command line).
     attr_reader :top_level_tasks
 
+    attr_reader :extended_task_args
+
     DEFAULT_RAKEFILES = [
       'rakefile',
       'Rakefile',
@@ -149,7 +151,10 @@ module Rake
     def invoke_task(task_string) # :nodoc:
       name, args = parse_task_string(task_string)
       t = self[name]
-      t.invoke(*args)
+      t.arg_names.size.times do |i|
+        args[i] ||= nil
+      end
+      t.invoke(*args, argv: extended_task_args[name])
     end
 
     def parse_task_string(string) # :nodoc:
@@ -625,10 +630,7 @@ module Rake
       options.rakelib = ['rakelib']
       options.trace_output = $stderr
 
-      task_args_hash = preparse_argv!(ARGV)
-      task_args_hash.each_pair do |k,v|
-        self[k].argv = v
-      end
+      @extended_task_args =  preparse_argv!(ARGV)
 
       OptionParser.new do |opts|
         opts.banner = "#{Rake.application.name} [-f rakefile] {options} targets..."

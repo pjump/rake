@@ -407,6 +407,11 @@ class TestRakeApplicationOptions < Rake::TestCase
     assert_equal ["a", "b"], @tasks.sort
   end
 
+  def test_task_with_extended_args
+    command_line("a", "b", "[", "foo", "bar", "]")
+    #assert_equal [ "a" ], @tasks.sort
+  end
+
   def test_default_task_collection
     command_line()
     assert_equal ["default"], @tasks

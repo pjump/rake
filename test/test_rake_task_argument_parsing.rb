@@ -24,7 +24,7 @@ class TestRakeTaskArgumentParsing < Rake::TestCase
     assert_equal "name", name
     assert_equal ["one"], args
   end
-
+  
   def test_two_arguments
     name, args = @app.parse_task_string("name[one,two]")
     assert_equal "name", name

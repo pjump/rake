@@ -9,10 +9,14 @@ module Rake
     # Argument names
     attr_reader :names
 
+    #Extended arguments
+    attr_accessor :argv
+
     # Create a TaskArgument object with a list of argument +names+ and a set
     # of associated +values+.  +parent+ is the parent argument object.
     def initialize(names, values, parent=nil)
       @names = names
+      @argv = []
       @parent = parent
       @hash = {}
       @values = values

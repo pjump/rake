@@ -22,7 +22,8 @@ module Rake
           if arg == ']'
             state = :out
           else
-            results[outer_argv.last] << arg
+            last_outer_arg_base = outer_argv.last.partition('[').first
+            results[last_outer_arg_base] << arg
           end
         else
           raise ScriptError, "the author of this method is an idiot"
